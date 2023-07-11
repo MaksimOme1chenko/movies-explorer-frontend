@@ -1,0 +1,115 @@
+.about-project {
+    box-sizing: border-box;
+    margin-top: 110px;
+    padding: 0 70px;
+}
+
+.about-project__content {
+    display: flex;
+    gap: 40px;
+    margin-top: 70px;
+}
+
+.about-project__info{
+    max-width: 550px;
+}
+
+.about-project__info-title {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+.about-project__info-description{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 26px 0 0 0;
+}
+.about-project__date{
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 14px 0;
+    margin: 110px 0;
+}
+.about-project__date-title{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    min-height: 36px;
+    background-color: #F2F2F2;
+}
+.about-project__date-title__green{
+    background-color: #2BE080;
+}
+.about-project__date-description{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    color: #A0A0A0;
+    margin: 0;
+}
+@media screen and (max-width: 900px) {
+    .about-project {
+        padding: 0 50px;
+    }
+
+    .about-project__content {
+        gap: 30px;
+    }
+
+    .about-project__info-description {
+        line-height: 18px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .about-project {
+        padding: 0 18px;
+    }
+
+    .about-project__content {
+        flex-direction: column;
+        align-self: center;
+        max-width: 284px;
+        margin: 60px auto 0;
+    }
+
+    .about-project__info-title {
+        font-size: 18px;
+        line-height: 22px;
+    }
+
+    .about-project__info-description {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .about-project__date {
+        margin: 60px 0 70px;
+    }
+
+    .about-project__date-title {
+        font-size: 11px;
+        line-height: 13px;
+    }
+
+    .about-project__date-description {
+        font-size: 11px;
+        line-height: 13px;
+    }
+    .about-project__date{
+        grid-template-columns: 100px 1fr;
+        gap: 10px 0;
+    }
+}
