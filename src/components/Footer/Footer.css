@@ -1,6 +1,6 @@
 .footer{
     padding: 79px 70px 0;
-    margin: 0 auto 20px;
+    margin: auto 
 }
 .footer__title{
     font-style: normal;
@@ -16,6 +16,7 @@
 .footer__container{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 .footer__copyright{
     margin: 0;

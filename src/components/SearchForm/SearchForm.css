@@ -31,7 +31,6 @@
     align-self: center;
     outline: none;
     padding: 0;
-    /* width: calc(100% - 400px); */
     width: 100%;
     line-height: 22px;
     font-size: 20px;
@@ -46,6 +45,7 @@
     background-color: transparent;
     align-self: center;
     margin-right: 30px;
+    transition: opacity .3s linear;
 }
 .search__image{
     align-self: center;
@@ -53,6 +53,10 @@
     max-height: 34px;
     margin-right: 10px;
     margin-left: 19px;
+}
+
+.search__button:hover{
+    opacity: .8;
 }
 
 @media screen and (max-width: 900px) {

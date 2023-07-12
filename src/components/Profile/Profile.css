@@ -64,7 +64,8 @@
     cursor: pointer;
     padding: 0;
     width: 100%;
-    transition: opacity .3s linear
+    transition: opacity .3s linear;
+    margin-bottom: 70px;
 }
 .profile__button-edit:hover{
   opacity: 0.6;
@@ -79,6 +80,9 @@
   
     .profile__button-edit {
       margin-top: 210px;
+    }
+    .profile__button-exit{
+      margin-bottom: 269px;
     }
   }
   
@@ -101,5 +105,6 @@
     .profile__button-exit {
       font-size: 12px;
       line-height: 14.52px;
+      margin-bottom: 40px;
     }
   }

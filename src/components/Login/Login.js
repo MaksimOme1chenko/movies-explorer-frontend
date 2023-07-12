@@ -17,6 +17,7 @@ function Login() {
         className="form__input"
         id="email-input"
         type="email"
+        placeholder="E-mail"
         required
       ></input>
       <label className="form__label">Пароль</label>
@@ -24,6 +25,7 @@ function Login() {
         className="form__input"
         id="email-input"
         type="password"
+        placeholder="Пароль"
         required
         minLength="2"
         maxLength="30"

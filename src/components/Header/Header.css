@@ -10,6 +10,7 @@
     width: 38px;
     height: 38px;
     cursor: pointer;
+    transition: opacity .5s linear;
 }
 .header__button-container{
     display: flex;
@@ -38,6 +39,7 @@
     font-size: 12px;
     line-height: 16px;
     color: #000;
+    transition: opacity .3s linear;
 }
 .header__button__films{
     font-size: 13px;
@@ -45,6 +47,7 @@
     font-weight: 400;
     color: #000;
     text-decoration: none;
+    transition: opacity .3s linear;
 }
 .header__button__films_active{
     color: black;
@@ -72,6 +75,7 @@
     align-items: center;
     justify-content: center;
     padding: 0;
+    transition: opacity .3s linear;
 }
 .header__burger-button {
     padding: 0;
@@ -82,6 +86,24 @@
     border: none;
     justify-self: center;
     cursor: pointer;
+    transition: opacity .3s linear;
+  }
+
+  .header__burger-button:hover {
+    opacity: .6;
+  }
+
+  .header__logo:hover{
+    opacity: .3;
+  }
+  .header__button:hover{
+    opacity: .6;
+  }
+  .header__button__films:hover{
+    opacity: .6;
+  }
+  .header__pofile__link:hover{
+    opacity: .6;
   }
 
 @media screen and (max-width: 1024px) {

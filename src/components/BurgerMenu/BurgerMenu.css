@@ -56,6 +56,7 @@
     line-height: 22px;
     text-align: center;
     text-decoration: none;
+    transition: opacity .3s linear;
   }
   
   .burger-menu__link-profile {
@@ -71,6 +72,7 @@
     text-decoration: none;
     align-items: center;
     justify-content: center;
+    transition: opacity .3s linear;
   }
   .burger-menu__link_active{
     padding-bottom: 4px;
@@ -79,6 +81,12 @@
   }
   .burger-menu__link_margin{
     margin-bottom: 0;
+  }
+  .burger-menu__link:hover{
+    opacity: .6;
+  }
+  .burger-menu__link-profile:hover{
+    opacity: .6;
   }
   
   @media screen and (max-width: 600px) {
