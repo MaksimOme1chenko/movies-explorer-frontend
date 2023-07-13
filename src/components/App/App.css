@@ -1,0 +1,14 @@
+.page{
+  font-family: 'inter', sans-serif, Arial;
+  background: #fff;
+  color: #000;
+}
+.page__content{
+  font-family: 'inter', sans-serif, Arial;
+  max-width: 1280px;
+  min-width: 320px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+}

@@ -1,0 +1,110 @@
+.profile__container{
+    max-width: 410px;
+    margin: auto;
+}
+.profile__title{
+    font-size: 24px;
+    line-height: 29px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 74px;
+}
+.profile__form{
+    width: 100%;
+    margin: 123px auto 0;
+    padding: 0;
+}
+.profile__input-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 17px;
+}
+.profile__label{
+    font-size: 11px;
+    line-height: 14px;
+}
+.profile__input{
+    border: none;
+    text-align: right;
+    background: none;
+    outline: none;
+    font-size: 11px;
+    line-height: 14px;
+    width: 270px;
+    height: 100%;    
+}
+.profile__input-container:last-of-type{
+    padding-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.profile__button-edit{
+    margin-top: 220px;
+    margin-bottom: 16px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 0;
+    width: 100%;
+    transition: opacity .5s linear
+
+}
+.profile__button-exit{
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #EE3465;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    width: 100%;
+    transition: opacity .3s linear;
+    margin-bottom: 70px;
+}
+.profile__button-edit:hover{
+  opacity: 0.6;
+}
+.profile__button-exit:hover{
+  opacity: 0.6;
+}
+@media screen and (max-width: 900px) {
+    .profile__title {
+      margin: 236px 0 96px;
+    }
+  
+    .profile__button-edit {
+      margin-top: 210px;
+    }
+    .profile__button-exit{
+      margin-bottom: 269px;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .profile__container{
+        padding-left: 30px;
+        padding-right: 30px;
+    }  
+  
+    .profile__title {
+      margin: 70px 0 80px;
+    }
+  
+    .profile__button-edit {
+      margin-top: 379px;
+      font-size: 12px;
+      line-height: 14.52px;
+    }
+  
+    .profile__button-exit {
+      font-size: 12px;
+      line-height: 14.52px;
+      margin-bottom: 40px;
+    }
+  }
