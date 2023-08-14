@@ -3,10 +3,28 @@ import './SearchForm.css'
 import search from '../../images/search.svg'
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 
-function SearchForm() {
+function SearchForm({ onSubmit }) {
+
+  const [ values, setValues ] = React.useState({words: '', isShortMovie: false});
+
+
+  const handleChange = (e) => {
+    setValues({...values, words: e.target.value});
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    onSubmit(values);
+  };
+  
+  const handleClickSwitch = (e) => {
+    setValues({...values, isShortMovie: e.target.checked});
+  };
+
   return (
     <section className="search">
-      <form className="search__from">
+      <form className="search__from" onSubmit={handleSubmit}>
         <div className="search__input-container">
           <img className="search__image" src={search} alt="Поиск"></img>
           <input
@@ -14,18 +32,20 @@ function SearchForm() {
             type="text"
             placeholder="Фильм"
             id="film-input"
+            defaultValue={values.words}
+            onChange={handleChange}
             required
           ></input>
         </div>
         <div className="search__container">
           <button className="search__button"></button>
           <div className="search__checkbox-container">
-            <FilterCheckbox />
+            <FilterCheckbox onClickSwitch={handleClickSwitch}/>
           </div>
         </div>
       </form>
       <div className="search__checkbox-mobile">
-        <FilterCheckbox />
+        <FilterCheckbox onClickSwitch={handleClickSwitch}/>
       </div>
     </section>
   );
