@@ -8,17 +8,17 @@ function SearchForm({ onSubmit }) {
   const [ values, setValues ] = React.useState({words: '', isShortMovie: false});
 
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     setValues({...values, words: e.target.value});
   };
 
-  const handleSubmit = (e) => {
+  function handleSubmit(e) {
     e.preventDefault();
-
+    
     onSubmit(values);
   };
   
-  const handleClickSwitch = (e) => {
+  function handleClickSwitch(e) {
     setValues({...values, isShortMovie: e.target.checked});
   };
 

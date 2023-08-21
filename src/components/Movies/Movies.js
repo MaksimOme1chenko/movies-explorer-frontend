@@ -7,6 +7,7 @@ import '../MoviesCardList/MoviesCardList.css';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
+import { useLocation } from "react-router-dom";
 
 function Movies({
   handleMenuClick,
@@ -20,9 +21,11 @@ function Movies({
   onDeleteMovie,
   savedMovies
 }) {
-  const [cardsCount, setCardsCount] = React.useState(12);
+  const [moviesCardsCount, setMoviesCardsCount] = React.useState(12);
   const [widthSize, setWidthSize] = React.useState(0);
-  const [cardsCountScale, setCardsCountScale] = React.useState(3);
+  const [moviesCardsCountScale, setMoviesCardsCountScale] = React.useState(3);
+
+  const { pathname } = useLocation()
 
 
   React.useEffect(() => {
@@ -41,29 +44,31 @@ function Movies({
 
   React.useEffect(() => {
     if (widthSize > 1000) {
-      setCardsCount(12);
-      setCardsCountScale(3);
+      setMoviesCardsCount(12);
+      setMoviesCardsCountScale(3);
 
       return;
     }
 
     if (widthSize <= 1000) {
-      setCardsCount(8);
-      setCardsCountScale(2);
+      setMoviesCardsCount(8);
+      setMoviesCardsCountScale(2);
     }
 
     if (widthSize <= 560) {
-      setCardsCount(5);
+      setMoviesCardsCount(5);
 
       return;
     }
   }, [widthSize, isLoading]);
 
   const handleButtonClick = () => {
-    setCardsCount(cardsCount + cardsCountScale);
+    setMoviesCardsCount(moviesCardsCount + moviesCardsCountScale);
   };
 
   const handleSubmit = (values) => {
+
+
     onSubmit(values);
   };
 
@@ -78,20 +83,20 @@ function Movies({
           <Preloader />
         ) : (
           <MoviesCardList>
-            {movies.slice(0, cardsCount).map((movie) => (
+            {movies.slice(0, moviesCardsCount).map((movie) => (
               <MoviesCard
                 key={movie.id}
-                movies={movies}
                 movie={movie}
                 onSaveMovie={onSaveMovie}
                 onDeleteMovie={onDeleteMovie}
                 savedMovies={savedMovies}
                 isSavedFilms={false}
+                IsSaved={pathname === '/movies' ? savedMovies.some((savedMovie) => savedMovie.movieId === movie.id) : false}
               />
             ))}
           </MoviesCardList>
         )}
-        {cardsCount >= movies.length || isLoading ? (
+        {moviesCardsCount >= movies.length || isLoading ? (
           ""
         ) : (
           <button

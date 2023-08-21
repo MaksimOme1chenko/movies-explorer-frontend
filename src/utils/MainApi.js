@@ -38,7 +38,7 @@ class MainApi {
         }).then(this._checkResponse)
     }
 
-   postSaveMovie(movie){
+    saveMovie(movie){
         return fetch(`${this._url}/movies`, {
           method: 'POST',
           headers: this._headers,
@@ -58,6 +58,8 @@ class MainApi {
           }),
         }).then(this._checkResponse)
       };
+
+
 
       deleteSaveMovie(movieId){
         return fetch(`${this._url}/movies/${movieId}`, {

@@ -7,10 +7,18 @@ import Footer from "../Footer/Footer";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
-function SavedMovies({ isOpen, onClose, handleMenuClick, movies, onSaveMovie, onSubmit, savedMovies, onDeleteMovie, errorMessage }) {
-
-  function handleSubmit(values){
-     onSubmit(values)
+function SavedMovies({
+  isOpen,
+  onClose,
+  handleMenuClick,
+  movies,
+  onSaveMovie,
+  onSubmit,
+  onDeleteMovie,
+  errorMessage,
+}) {
+  function handleSubmit(values) {
+    onSubmit(values);
   }
 
   return (
@@ -24,10 +32,10 @@ function SavedMovies({ isOpen, onClose, handleMenuClick, movies, onSaveMovie, on
           <MoviesCard
             key={movie.movieId}
             movie={movie}
-            savedMovies={savedMovies}
             onSaveMovie={onSaveMovie}
             isSavedFilms={true}
             onDeleteMovie={onDeleteMovie}
+            buttonType="saved"
           />
         ))}
       </MoviesCardList>

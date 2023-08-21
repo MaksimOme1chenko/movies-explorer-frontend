@@ -46,17 +46,6 @@
 }
 .movies-card__button_active{
     background-image:url(../../images/saveActive.svg);
-    background-repeat: no-repeat;
-    background-color: transparent;
-    width: 30px;
-    height: 30px;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    top: 19px;
-    right: 14px;
-    padding: 0;
-    transition: opacity .3s linear;
 }
 .movies-card__cover{
     width: 100%;

@@ -31,93 +31,13 @@ function App() {
   const navigate = useNavigate()
   const location = useLocation()
 
- function handleSearchMovies(values){
-    setMoviesErrorMessage("");
-
-    if (localStorage.getItem("movies") !== null) {
-      handleSearchMoviesFromLocalStorage(values);
-    } else {
-      setIsMoviesLoadings(true);
-      moviesApi
-        .getMovies()
-        .then((res) => localStorage.getItem("movies", JSON.stringify(res)))
-        .then(() => handleSearchMoviesFromLocalStorage(values))
-        .then(() =>
-          setTimeout(() => localStorage.removeItem("movies"), 60 * 60 * 1000)
-        )
-        .catch(() =>
-          setMoviesErrorMessage(
-            "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз"
-          )
-        )
-        .finally(() => setIsMoviesLoadings(false));
-    }
-  };
-
-  function handleSearchMoviesFromLocalStorage(values) {
-    const localMoviesCards = JSON.parse(localStorage.getItem("movies"));
-
-    const filteredMoviesCards = moviesFilter(values, localMoviesCards);
-
-    setMovies(filteredMoviesCards);
-
-    if (filteredMoviesCards.length === 0) {
-      setMoviesErrorMessage("Ничего не найдено");
-    }
-
-    localStorage.setItem(
-      "filtered-movies",
-      JSON.stringify(filteredMoviesCards)
-    );
-  };
-
-  function handleSaveMovie(movie, isSaved, setSaved) {
-    if (!isSaved)
-      mainApi.postSaveMovie(movie)
-        .then((newMovie) => {
-          setSavedMovies([newMovie, ...savedMovies]);
-          setSaved(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-  }
-
-  function handleDeleteMovie(movie, setSaved){
-    const savedMovie = savedMovies.find(
-      (card) => card.movieId === movie.id || card.movieId === movie.movieId
-    );
-    mainApi.deleteSaveMovie(savedMovie._id)
-    .then(() => {
-      setSavedMovies((state) => state.filter((item) => item._id !== savedMovie._id));
-      setSaved(false);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-  }
-
-
-  function handleSearchSavedMovies(values) {
-    setSavedMoviesErrorMessage('');
-
-    const localSavedMoviesCards = JSON.parse(localStorage.getItem('saved-movies'));
-
-    const filteredSavedMoviesCards = moviesFilter(values, localSavedMoviesCards);
-
-    setSavedMovies(filteredSavedMoviesCards);
-
-    if (filteredSavedMoviesCards.length === 0) {
-      setSavedMoviesErrorMessage('Ничего не найдено');
-    };
-  };
-
   React.useEffect(() => {
     if(loggedIn) {
       mainApi
       .getSavedMovies()
-      .then((data) => {
-        setSavedMovies(data);
+      .then((savedMovies) => {
+        setSavedMovies(savedMovies);
+        localStorage.setItem('saved-movies', JSON.stringify(savedMovies));
       })
       .catch((err) => {
         console.log(err);
@@ -136,6 +56,77 @@ function App() {
       })
     }
   }, [loggedIn])
+
+
+  function handleSearchMovies(values) {
+    setMoviesErrorMessage('');
+
+    if (localStorage.getItem('movies') !== null) {
+      handleSearchMoviesFromLocalStorage(values);
+    } else {
+      setIsMoviesLoadings(true);
+      moviesApi.getMovies()
+        .then(res => localStorage.setItem('movies', JSON.stringify(res)))
+        .then(() => handleSearchMoviesFromLocalStorage(values))
+        .then(() => setTimeout(() => localStorage.removeItem('movies'), 60 * 60 * 1000))
+        .catch(() => setMoviesErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'))
+        .finally(() => setIsMoviesLoadings(false));
+    };
+  };
+
+   function handleSearchMoviesFromLocalStorage(values) {
+    const localMoviesCards = JSON.parse(localStorage.getItem('movies'));
+
+    const filteredMoviesCards = moviesFilter(values, localMoviesCards);
+
+    setMovies(filteredMoviesCards);
+
+    if (filteredMoviesCards.length === 0) {
+      setMoviesErrorMessage('Ничего не найдено');
+    };
+
+    localStorage.setItem('filtered-movies', JSON.stringify(filteredMoviesCards));
+  };
+
+  function handleSaveMovie(movie) {
+    const isSaved = savedMovies.some((savedMovie) => savedMovie.movieId === movie.movieId);
+    if (!isSaved)
+      mainApi.saveMovie(movie)
+        .then((savedMovie) => {
+          const updatedSavedMovies = [...savedMovies, savedMovie];
+          setSavedMovies(updatedSavedMovies); 
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+  }
+
+
+  function handleDeleteMovie(movieId){
+    const updatedSavedMovies = savedMovies.filter((movie) => movie._id !== movieId);
+    mainApi.deleteSaveMovie(movieId)
+    .then(() => {
+      setSavedMovies(updatedSavedMovies);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  function handleSearchSavedMovies(values) {
+    setSavedMoviesErrorMessage('');
+
+    const localSavedMoviesCards = JSON.parse(localStorage.getItem('saved-movies'));
+
+    const filteredSavedMoviesCards = moviesFilter(values, localSavedMoviesCards);
+
+    setSavedMovies(filteredSavedMoviesCards);
+
+    if (filteredSavedMoviesCards.length === 0) {
+      setSavedMoviesErrorMessage('Ничего не найдено');
+    };
+  };
+
 
   function handleLoginUser({email, password}) {
     const userData = mainApi.authorize({email, password})
@@ -165,9 +156,11 @@ function App() {
       console.log(err)
     })
   }
-
+  
   function tokenCheck(){
-    mainApi.getUserData()
+    const authorized = localStorage.getItem('authorized');
+    if(authorized) {
+      mainApi.getUserData()
     .then((res) => {
       setLoggedIn(true)
       setCurrentUser(res)
@@ -176,9 +169,8 @@ function App() {
     .catch((err) => {
       console.log(err);
     })
+    }
   }
-
-
 
   React.useEffect(() => {
     tokenCheck()
@@ -193,6 +185,7 @@ function App() {
         setSuccess(true)
       })
       .catch((err) => {
+        setInfoTooltipOpen(true)
         setSuccess(false)
         console.log(err);
   })
@@ -205,6 +198,7 @@ function App() {
       setLoggedIn(false);
       setCurrentUser({})
       setSuccess(false)
+      localStorage.clear()
     })
     .catch((err) => {
       console.log(err);
@@ -213,6 +207,15 @@ function App() {
 
   function handleMenuClick() {
     setBurgerMenuOpen(true);
+  }
+
+  function handleOverlayClick(e) {
+    if (
+      e.target.classList.contains("popup_is-opened") ||
+      e.target.classList.contains("popup__button-close")
+    ) {
+      closePopups();
+    }
   }
 
   function closePopups() {
@@ -238,10 +241,10 @@ function App() {
                 isOpen={isBurgerMenuOpen}
                 onClose={closePopups}
                 movies={movies}
+                savedMovies={savedMovies}
                 onSubmit={handleSearchMovies}
                 isLoading={isMoviesLoadings}
                 loggedIn={loggedIn}
-                savedMovies={savedMovies}
                 onSaveMovie={handleSaveMovie}
                 onDeleteMovie={handleDeleteMovie}
                 errorMessage={moviesErrorMessage}
@@ -285,6 +288,7 @@ function App() {
         isOpen={isInfoTooltipOpen}
         onClose={closePopups}
         isSuccess={isSuccess}
+        onOverlayClose={handleOverlayClick}
         />
         </CurrentUserContext.Provider>
       </div>

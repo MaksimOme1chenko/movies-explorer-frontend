@@ -4,8 +4,8 @@ import Header from "../Header/Header";
 import BurgerMenu from "../BurgerMenu/BurgerMenu";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useForm from '../../hooks/useForm';
-import { USER_REGEX } from '../../utils/constants';
-import { EMAIL_REGEX } from '../../utils/constants';
+import { userRegex } from '../../utils/constants';
+import { emailRegex } from '../../utils/constants';
 
 
 function Profile({ handleMenuClick, isOpen, onClose, loggedIn, handleUpdateUser, handleLogout }) {
@@ -26,7 +26,6 @@ function Profile({ handleMenuClick, isOpen, onClose, loggedIn, handleUpdateUser,
     } else {
       setIsLastValues(false);
     }
-
   }, [values]);
 
   function handleSubmit(e) {
@@ -55,7 +54,7 @@ function Profile({ handleMenuClick, isOpen, onClose, loggedIn, handleUpdateUser,
               minLength="2"
               maxLength="40"
               onChange={handleChange}
-              pattern={USER_REGEX}
+              pattern={userRegex}
               required
             />
             <span className="profile__input-error">{errors.name}</span>
@@ -67,7 +66,7 @@ function Profile({ handleMenuClick, isOpen, onClose, loggedIn, handleUpdateUser,
               type="email"
               name="email"
               onChange={handleChange}
-              pattern={EMAIL_REGEX}
+              pattern={emailRegex}
               value={values.email || ' '}
               required
             />

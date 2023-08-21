@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "../Form/Form";
 import '../Form/Form.css'
-import { EMAIL_REGEX, USER_REGEX } from "../../utils/constants";
+import { emailRegex, userRegex } from "../../utils/constants";
 import useForm from '../../hooks/useForm';
 
 
@@ -41,7 +41,7 @@ function Register({ onRegistr, error }) {
         required
         onChange={handleChange}
         value={values.name || ''}
-        pattern={USER_REGEX}
+        pattern={userRegex}
         title="Поле должно содержать только латиницу, кириллицу, пробел или дефис"
       
       ></input>
@@ -55,7 +55,7 @@ function Register({ onRegistr, error }) {
         placeholder="E-mail"
         onChange={handleChange}
         value={values.email || ''}
-        pattern={EMAIL_REGEX}
+        pattern={emailRegex}
         required
       ></input>
       <span className="form__input-error">{errors.email}</span>
