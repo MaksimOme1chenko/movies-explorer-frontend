@@ -19,7 +19,8 @@ function Movies({
   onSaveMovie,
   errorMessage,
   onDeleteMovie,
-  savedMovies
+  savedMovies,
+  loggedIn
 }) {
   const [moviesCardsCount, setMoviesCardsCount] = React.useState(12);
   const [widthSize, setWidthSize] = React.useState(0);
@@ -62,11 +63,11 @@ function Movies({
     }
   }, [widthSize, isLoading]);
 
-  const handleButtonClick = () => {
+  function handleButtonClick() {
     setMoviesCardsCount(moviesCardsCount + moviesCardsCountScale);
   };
 
-  const handleSubmit = (values) => {
+  function handleSubmit(values) {
 
 
     onSubmit(values);
@@ -74,14 +75,14 @@ function Movies({
 
   return (
     <>
-      <Header loggedIn={true} handleMenuClick={handleMenuClick} />
+      <Header loggedIn={loggedIn} handleMenuClick={handleMenuClick} />
       <section className="movies">
         <BurgerMenu isOpen={isOpen} onClose={onClose} />
         <SearchForm onSubmit={handleSubmit} />
         <p className="movies__error-message">{errorMessage}</p>
         {isLoading ? (
           <Preloader />
-        ) : (
+        ) : ( 
           <MoviesCardList>
             {movies.slice(0, moviesCardsCount).map((movie) => (
               <MoviesCard
@@ -91,7 +92,7 @@ function Movies({
                 onDeleteMovie={onDeleteMovie}
                 savedMovies={savedMovies}
                 isSavedFilms={false}
-                IsSaved={pathname === '/movies' ? savedMovies.some((savedMovie) => savedMovie.movieId === movie.id) : false}
+                isSaved={pathname === '/movies' ? savedMovies.some((savedMovie) => savedMovie.movieId === movie.id) : false}
               />
             ))}
           </MoviesCardList>

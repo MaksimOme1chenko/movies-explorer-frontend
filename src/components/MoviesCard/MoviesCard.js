@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import './MoviesCard.css';
 
-function MoviesCard({ onSaveMovie, onDeleteMovie, movie, savedMovies, IsSaved, isSavedFilms, buttonType  }) {
+function MoviesCard({ onSaveMovie, onDeleteMovie, movie, savedMovies, isSaved, isSavedFilms, buttonType  }) {
 
   function durationConverter(duration) {
     const hours = Math.floor(duration / 60);
@@ -13,7 +13,7 @@ function MoviesCard({ onSaveMovie, onDeleteMovie, movie, savedMovies, IsSaved, i
   const { pathname } = useLocation();
   const moviePath = pathname === '/movies';
 
-  const [isMovieSaved, setIsMovieSaved] = React.useState(IsSaved ? true : false);
+  const [isMovieSaved, setIsMovieSaved] = React.useState(isSaved ? true : false);
   const [movieIdForDelete, setMovieIdForDelete] = React.useState('');
 
   const onClickOnMoviePath = isMovieSaved ? handleDeleteMovie : handleSaveMovie;

@@ -32,30 +32,33 @@ function App() {
   const location = useLocation()
 
   React.useEffect(() => {
-    if(loggedIn) {
-      mainApi
-      .getSavedMovies()
-      .then((savedMovies) => {
-        setSavedMovies(savedMovies);
-        localStorage.setItem('saved-movies', JSON.stringify(savedMovies));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
-  }, [loggedIn])
-
-  React.useEffect(() => {
-    if(loggedIn) {
+    if(loggedIn){
       mainApi.getUserData()
-      .then((data) => {
-        setCurrentUser(data)
+      .then(userData => setCurrentUser(userData))
+      .then(() => setLoggedIn(true))
+      .then(() => navigate(location.pathname, { replace: true }))
+      .then(() => {
+        mainApi.getSavedMovies()
+          .then(res => localStorage.setItem('saved-movies', JSON.stringify(res)))
+          .then(() => setSavedMovies(JSON.parse(localStorage.getItem('saved-movies'))))
+          .catch((err) => {
+            console.log(err);
+          })
+
+        if (localStorage.getItem('filtered-movies') !== null) {
+          const localFilteredMoviesCards = JSON.parse(localStorage.getItem('filtered-movies'));
+
+          setMovies(localFilteredMoviesCards);
+        };
+        if (localStorage.getItem('saved-movies') !== null) {
+          const localFilteredSavedMoviesCards = JSON.parse(localStorage.getItem('saved-movies'))
+            setSavedMovies(localFilteredSavedMoviesCards)
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch(err => console.log(err));
     }
-  }, [loggedIn])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn]);
 
 
   function handleSearchMovies(values) {
@@ -107,6 +110,7 @@ function App() {
     mainApi.deleteSaveMovie(movieId)
     .then(() => {
       setSavedMovies(updatedSavedMovies);
+      localStorage.setItem('saved-movies', JSON.stringify(updatedSavedMovies));
     })
     .catch((err) => {
       console.log(err);
@@ -134,6 +138,7 @@ function App() {
       if(userData) {
         setLoggedIn(true);
         setCurrentUser({email, password})
+        localStorage.setItem('authorized', 'true');
         navigate('/movies', {replace: true})
       }
     })
@@ -157,52 +162,57 @@ function App() {
     })
   }
   
-  function tokenCheck(){
+  function tokenCheck() {
     const authorized = localStorage.getItem('authorized');
-    if(authorized) {
-      mainApi.getUserData()
-    .then((res) => {
-      setLoggedIn(true)
-      setCurrentUser(res)
-      navigate(location.pathname, { replace: true })
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    if (authorized) {
+      mainApi
+        .getUserData()
+        .then((res) => {
+          setLoggedIn(true);
+          setCurrentUser(res);
+          navigate(location.pathname, { replace: true });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
+
   React.useEffect(() => {
     tokenCheck()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
-  function handleUpdateUser(newUserData){
-    mainApi.updateUserdata(newUserData)
+  function handleUpdateUser(newUserData) {
+    mainApi
+      .updateUserdata(newUserData)
       .then((data) => {
-        setCurrentUser(data)
-        setInfoTooltipOpen(true)
-        setSuccess(true)
+        setCurrentUser(data);
+        setInfoTooltipOpen(true);
+        setSuccess(true);
       })
       .catch((err) => {
-        setInfoTooltipOpen(true)
-        setSuccess(false)
+        setInfoTooltipOpen(true);
+        setSuccess(false);
         console.log(err);
-  })
-}
+      });
+  }
 
   function handleLogout() {
-    mainApi.signout()
-    .then(() => {
-      navigate("/", { replace: true });
-      setLoggedIn(false);
-      setCurrentUser({})
-      setSuccess(false)
-      localStorage.clear()
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    mainApi
+      .signout()
+      .then(() => {
+        localStorage.clear();
+        setLoggedIn(false);
+        setCurrentUser({});
+        setSuccess(false);
+        navigate('/', { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleMenuClick() {

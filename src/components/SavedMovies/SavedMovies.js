@@ -16,6 +16,7 @@ function SavedMovies({
   onSubmit,
   onDeleteMovie,
   errorMessage,
+  loggedIn
 }) {
   function handleSubmit(values) {
     onSubmit(values);
@@ -23,7 +24,7 @@ function SavedMovies({
 
   return (
     <>
-      <Header loggedIn={true} handleMenuClick={handleMenuClick} />
+      <Header loggedIn={loggedIn} handleMenuClick={handleMenuClick} />
       <BurgerMenu isOpen={isOpen} onClose={onClose} />
       <SearchForm onSubmit={handleSubmit} />
       <p className="movies__error-message">{errorMessage}</p>
