@@ -2,11 +2,16 @@ import React from "react";
 import Form from "../Form/Form";
 import  "../Form/Form.css";
 import useForm from '../../hooks/useForm';
-import { emailRegex } from '../../utils/constants';
+import { useNavigate } from 'react-router-dom';
 
-function Login({ onLogin, error }) {
+function Login({ onLogin, error, loggedIn, handleCleanError, isLoading }) {
 
   const { values, errors, handleChange, isFormValid } = useForm();
+  const navigate = useNavigate();
+ 
+  React.useEffect(() => {
+    loggedIn && navigate('/movies', { replace: true });
+  }); 
   
   function handleSubmit(e) {
     e.preventDefault();
@@ -24,8 +29,12 @@ function Login({ onLogin, error }) {
       link={"/signup"}
       linkText="Регистрация"
       handleSubmit={handleSubmit}
-      isDisabled={!isFormValid}
+      isDisabled={!isFormValid || isLoading}
       error={error}
+      formName='login'
+      loadingText='Вход...'
+      handleCleanError={handleCleanError}
+      isLoading={isLoading}
     >
       <label className="form__label">E-mail</label>
       <input
@@ -36,7 +45,6 @@ function Login({ onLogin, error }) {
         placeholder="E-mail"
         onChange={handleChange}
         value={values.email || ''}
-        pattern={emailRegex}
         required
       ></input>
       <span className="form__input-error">{errors.email}</span>

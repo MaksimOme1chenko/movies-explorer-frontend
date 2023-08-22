@@ -47,7 +47,7 @@ function MoviesCard({ onSaveMovie, onDeleteMovie, movie, savedMovies, isSaved, i
         type='button'
         onClick={moviePath ? onClickOnMoviePath : handleDeleteMovie}
       ></button>
-        <a href={movie.trailer} target="_black" rel="noreferrer">
+        <a href={movie.trailerLink} target="_black" rel="noreferrer">
          <img className="movies-card__cover" src={isSavedFilms ? movie.image :`https://api.nomoreparties.co/${movie.image.url}`} alt={movie.nameRU}></img> 
         </a>
       </li>

@@ -8,6 +8,17 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
 import { useLocation } from "react-router-dom";
+import {
+  DESKTOP,
+  TABLET,
+  MOBILE,
+  DESKTOP_CARDS,
+  TABLET_CARDS,
+  MOBILE_CARDS,
+  MORE_DESKTOP_CARDS,
+  MORE_TABLET_CARDS,
+  MORE_MOBILE_CARDS,
+} from "../../utils/constants";
 
 function Movies({
   handleMenuClick,
@@ -20,14 +31,16 @@ function Movies({
   errorMessage,
   onDeleteMovie,
   savedMovies,
+  handleSearch,
   loggedIn
 }) {
   const [moviesCardsCount, setMoviesCardsCount] = React.useState(12);
   const [widthSize, setWidthSize] = React.useState(0);
   const [moviesCardsCountScale, setMoviesCardsCountScale] = React.useState(3);
+  // const [moviesRequest, setMoviesRequest] = React.useState('')
+  // const [isCheckBoxChecked, setIsCheckBoxChecked] = React.useState(false);
 
   const { pathname } = useLocation()
-
 
   React.useEffect(() => {
     const handleWidthChange = () => {
@@ -44,21 +57,21 @@ function Movies({
   }, []);
 
   React.useEffect(() => {
-    if (widthSize > 1000) {
-      setMoviesCardsCount(12);
-      setMoviesCardsCountScale(3);
+    if (widthSize > DESKTOP) {
+      setMoviesCardsCount(DESKTOP_CARDS);
+      setMoviesCardsCountScale(MORE_DESKTOP_CARDS);
 
       return;
     }
 
-    if (widthSize <= 1000) {
-      setMoviesCardsCount(8);
-      setMoviesCardsCountScale(2);
+    if (widthSize <= TABLET) {
+      setMoviesCardsCount(TABLET_CARDS);
+      setMoviesCardsCountScale(MORE_TABLET_CARDS);
     }
 
-    if (widthSize <= 560) {
-      setMoviesCardsCount(5);
-
+    if (widthSize <= MOBILE) {
+      setMoviesCardsCount(MOBILE_CARDS);
+      setMoviesCardsCountScale(MORE_MOBILE_CARDS);
       return;
     }
   }, [widthSize, isLoading]);
@@ -67,18 +80,13 @@ function Movies({
     setMoviesCardsCount(moviesCardsCount + moviesCardsCountScale);
   };
 
-  function handleSubmit(values) {
-
-
-    onSubmit(values);
-  };
 
   return (
     <>
       <Header loggedIn={loggedIn} handleMenuClick={handleMenuClick} />
       <section className="movies">
-        <BurgerMenu isOpen={isOpen} onClose={onClose} />
-        <SearchForm onSubmit={handleSubmit} />
+        <BurgerMenu isOpen={isOpen} onClose={onClose}/>
+        <SearchForm onSubmit={onSubmit} handleSearch={handleSearch}/>
         <p className="movies__error-message">{errorMessage}</p>
         {isLoading ? (
           <Preloader />

@@ -2,6 +2,7 @@
     padding-left: 70px;
     padding-right: 70px;
     margin: 70px auto 80px;
+    position: relative;
 }
 .search__input-container{
     display: flex;
@@ -46,6 +47,20 @@
     align-self: center;
     margin-right: 30px;
     transition: opacity .3s linear;
+}
+.search__form-error{
+  bottom: 20px;
+  top: 20px;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  right: 0;
+  left: 0;
+  top: 80px;
+  color: red;
+  position: absolute;
 }
 .search__image{
     align-self: center;

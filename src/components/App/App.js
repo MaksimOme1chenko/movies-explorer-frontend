@@ -14,6 +14,7 @@ import mainApi from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import InfoTooltip from '../InfoTooltip/infoTooltip';
+import { TIMEOUT } from '../../utils/constants';
 
 function App() {
   const [isBurgerMenuOpen, setBurgerMenuOpen] = React.useState(false);
@@ -25,7 +26,8 @@ function App() {
   const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
   const [isSuccess, setSuccess] = React.useState(true);
   const [authErrorMessage, setAuthErrorMessage] = React.useState('')
-  const [currentUser, setCurrentUser] = React.useState({})
+  const [currentUser, setCurrentUser] = React.useState({});
+  const [isLoading, setIsLoading] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const navigate = useNavigate()
@@ -63,7 +65,6 @@ function App() {
 
   function handleSearchMovies(values) {
     setMoviesErrorMessage('');
-
     if (localStorage.getItem('movies') !== null) {
       handleSearchMoviesFromLocalStorage(values);
     } else {
@@ -71,15 +72,16 @@ function App() {
       moviesApi.getMovies()
         .then(res => localStorage.setItem('movies', JSON.stringify(res)))
         .then(() => handleSearchMoviesFromLocalStorage(values))
-        .then(() => setTimeout(() => localStorage.removeItem('movies'), 60 * 60 * 1000))
+        .then(() => setTimeout(() => localStorage.removeItem('movies'), TIMEOUT))
         .catch(() => setMoviesErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'))
         .finally(() => setIsMoviesLoadings(false));
     };
   };
 
+
    function handleSearchMoviesFromLocalStorage(values) {
     const localMoviesCards = JSON.parse(localStorage.getItem('movies'));
-
+    
     const filteredMoviesCards = moviesFilter(values, localMoviesCards);
 
     setMovies(filteredMoviesCards);
@@ -87,7 +89,8 @@ function App() {
     if (filteredMoviesCards.length === 0) {
       setMoviesErrorMessage('Ничего не найдено');
     };
-
+    localStorage.setItem('checkboxState', values.isShortMovie)
+    localStorage.setItem('movieSearch', values.words)
     localStorage.setItem('filtered-movies', JSON.stringify(filteredMoviesCards));
   };
 
@@ -133,6 +136,7 @@ function App() {
 
 
   function handleLoginUser({email, password}) {
+    setIsLoading(true);
     const userData = mainApi.authorize({email, password})
     .then(() => {
       if(userData) {
@@ -146,9 +150,13 @@ function App() {
       console.log(err);
       setAuthErrorMessage('Что-то пошло не так. попробуйте еще раз.')
     })
+    .finally(() => {
+      setIsLoading(false);
+    });
   }
 
   function handleRegisterUser({name, email, password}) {
+    setIsLoading(true);
     const userData = mainApi.register({name, email, password})
     .then(() => {
       if(userData) {
@@ -160,6 +168,13 @@ function App() {
       setAuthErrorMessage('Что-то пошло не так. попробуйте еще раз.')
       console.log(err)
     })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  }
+
+  function handleCleanError() {
+    setAuthErrorMessage('');
   }
   
   function tokenCheck() {
@@ -208,11 +223,17 @@ function App() {
         setLoggedIn(false);
         setCurrentUser({});
         setSuccess(false);
+        setMovies([])
+        setSavedMovies([])
         navigate('/', { replace: true });
       })
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  function handleNavigateBack() {
+    navigate(-1);
   }
 
   function handleMenuClick() {
@@ -239,9 +260,9 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
         <Routes>
           <Route path="/" element={<Main loggedIn={loggedIn}/>} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/signin" element={<Login onLogin={handleLoginUser} error={authErrorMessage}/>} />
-          <Route path="/signup" element={<Register onRegistr={handleRegisterUser} error={authErrorMessage}/>} />
+          <Route path="*" element={<NotFound onNavigateToBack={handleNavigateBack}/>} />
+          <Route path="/signin" element={<Login onLogin={handleLoginUser} error={authErrorMessage} loggedIn={loggedIn} handleCleanError={handleCleanError} isLoading={isLoading}/>} />
+          <Route path="/signup" element={<Register onRegistr={handleRegisterUser} error={authErrorMessage} loggedIn={loggedIn} handleCleanError={handleCleanError} isLoading={isLoading}/>} />
           <Route
             path="/movies"
             element={

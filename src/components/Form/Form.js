@@ -2,7 +2,6 @@ import React from "react";
 import './Form.css'
 import { Link } from "react-router-dom";
 
-
 function Form({
   title,
   children,
@@ -12,24 +11,30 @@ function Form({
   linkText,
   handleSubmit,
   isDisabled, 
-  error
+  error,
+  formName,
+  isLoading,
+  loadingText,
+  handleCleanError
 }) {
+
+ 
   return (
     <div className="form__container">
       <Link to="/" className="form__logo" />
       <h3 className="form__title">{title}</h3>
-      <form className="form" id="form" name="form" onSubmit={handleSubmit}>
+      <form className="form" id="form" name={formName} onSubmit={handleSubmit} noValidate>
         {children}
-        <p className="form__error">{error}</p>
-        <button className={isDisabled ? 'form__button form__button_inactive' : 'form__button'} 
+        <span className="form__error">{error}</span>
+        <button className={isDisabled || isLoading  ? 'form__button form__button_inactive' : 'form__button'} 
         type="submit" 
         disabled={isDisabled ? true : false}>
-          {btnText}
+          {isLoading ? loadingText : btnText}
         </button>
       </form>
       <p className="form__text">
         {text}
-        <Link to={link} className="form__link">
+        <Link to={link} onClick={handleCleanError} className="form__link">
           {linkText}
         </Link>
       </p>

@@ -1,12 +1,18 @@
 import React from "react";
 import Form from "../Form/Form";
 import '../Form/Form.css'
-import { emailRegex, userRegex } from "../../utils/constants";
+import { USER_REGEX } from "../../utils/constants";
 import useForm from '../../hooks/useForm';
+import { useNavigate } from 'react-router-dom';
 
 
-function Register({ onRegistr, error }) {
+function Register({ onRegistr, error, loggedIn, handleCleanError, isLoading }) {
   const { values, errors, handleChange, isFormValid } = useForm()
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    loggedIn && navigate('/movies', { replace: true });
+  }); 
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -28,6 +34,10 @@ function Register({ onRegistr, error }) {
       handleSubmit={handleSubmit}
       isDisabled={!isFormValid}
       error={error}
+      formName='register'
+      isLoading={isLoading}
+      loadingText='Регистрация...'
+      handleCleanError={handleCleanError}
     >
       <label className="form__label">Имя</label>
       <input
@@ -41,7 +51,7 @@ function Register({ onRegistr, error }) {
         required
         onChange={handleChange}
         value={values.name || ''}
-        pattern={userRegex}
+        pattern={USER_REGEX}
         title="Поле должно содержать только латиницу, кириллицу, пробел или дефис"
       
       ></input>
@@ -55,7 +65,6 @@ function Register({ onRegistr, error }) {
         placeholder="E-mail"
         onChange={handleChange}
         value={values.email || ''}
-        pattern={emailRegex}
         required
       ></input>
       <span className="form__input-error">{errors.email}</span>

@@ -1,10 +1,12 @@
+import { SHORT_MOVIES_DURATION } from './constants'
+
 function moviesFilter(values, moviesCards){
     const filterWords = (movie) => {
       return movie.nameRU.toLowerCase().indexOf(values.words.toLowerCase()) !== -1;
     };
   
     const filterShortMovie = (movie) => {
-      return movie.duration <= 40;
+      return movie.duration <= SHORT_MOVIES_DURATION;
     };
   
     if (values.isShortMovie) {
