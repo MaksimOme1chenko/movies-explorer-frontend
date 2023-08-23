@@ -12,6 +12,11 @@
     line-height: 18px;
     font-weight: 500;
     margin: 0 0 9px 0;
+    max-height: 18px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 250px;
 }
 .movies-card__info{
    margin: 14px 0 14px 14px;

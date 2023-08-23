@@ -28,6 +28,12 @@
     margin: 80px auto 0;
     display: block;
     transition: opacity .3s linear;
+    margin-bottom: 80px;
+}
+
+.movies__error-message{
+    text-align: center;
+    margin-bottom: 80px;
 }
 
 .movies-card-list__button:hover{
